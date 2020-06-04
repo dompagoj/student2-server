@@ -4,9 +4,10 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Student2.BL.Entities;
 using Student2.Server.Models;
 
-namespace Student2.Server.Repositories
+namespace Student2.Server.Services
 {
     public class AppJwtTokenHandler
     {
@@ -17,16 +18,20 @@ namespace Student2.Server.Repositories
         public AppJwtTokenHandler(IOptions<JwtSettings> settings)
         {
             _jwtSettings = settings.Value;
-            _credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.Value.Secret)), SecurityAlgorithms.HmacSha256);
+            _credentials =
+                new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.Value.Secret)),
+                    SecurityAlgorithms.HmacSha256);
         }
 
-        public string CreateSignedToken(string role)
+        public string CreateSignedToken(AppUser user, string role, int? universityId = null)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, "username"),
-                new Claim(ClaimTypes.Email, "email"),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.NormalizedUserName),
+                new Claim(ClaimTypes.Email, user.NormalizedEmail),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("university", universityId?.ToString() ?? user.UniversityId.ToString()),
             };
 
             var descriptor = new SecurityTokenDescriptor
@@ -34,7 +39,7 @@ namespace Student2.Server.Repositories
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddYears(1),
                 SigningCredentials = _credentials,
-                Issuer = _jwtSettings.Issuer,
+                Issuer = _jwtSettings.Issuer
             };
 
             return _handler.WriteToken(_handler.CreateToken(descriptor));

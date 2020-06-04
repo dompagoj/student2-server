@@ -1,9 +1,11 @@
 using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Student2.BL.Entities;
 using Student2.Server.Models;
 
 namespace Student2.Server.Extensions
@@ -12,11 +14,18 @@ namespace Student2.Server.Extensions
     {
         public static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSection = configuration.GetSection("JWT");
-            services.Configure<JwtSettings>(jwtSection);
-            var jwtSettings = jwtSection.Get<JwtSettings>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            var section = configuration.GetSection("JWT");
+            services.Configure<JwtSettings>(section);
+            var jwtSettings = section.Get<JwtSettings>();
+
+
+            services.AddAuthentication(opts =>
+                {
+                    opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(opts =>
                 {
                     opts.RequireHttpsMetadata = false;
@@ -30,11 +39,25 @@ namespace Student2.Server.Extensions
                         IssuerSigningKey =
                             new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
-            services.AddAuthorization(AuthPolicies.RegisterPolicies);
+            services.AddAuthorization(RegisterPolicies);
+        }
+
+        static void RegisterPolicies(AuthorizationOptions opts)
+        {
+            opts.AddPolicy(AppRole.ADMIN,
+                builder => builder.RequireAuthenticatedUser().RequireRole(AppRole.ADMIN).Build());
+
+            opts.AddPolicy(AppRole.EDITOR,
+                builder => builder.RequireAuthenticatedUser().RequireRole(AppRole.EDITOR, AppRole.ADMIN).Build());
+
+            opts.AddPolicy(AppRole.REGULAR,
+                builder => builder.RequireAuthenticatedUser().RequireRole(AppRole.REGULAR, AppRole.ADMIN).Build());
+
+            opts.DefaultPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
         }
     }
 }
