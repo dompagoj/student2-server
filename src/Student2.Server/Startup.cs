@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StackExchange.Redis;
 using Student2.DAL;
 using Student2.Server.Extensions;
+using Student2.Server.SignalRHubs;
 
 namespace Student2.Server
 {
@@ -26,8 +28,11 @@ namespace Student2.Server
                 opts.UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
             services.ConfigureIdentity();
 
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
+
             services.AddCors();
             services.AddControllers();
+            services.AddSignalR().AddStackExchangeRedis("localhost");
             services.ConfigureAuth(Configuration);
             services.ConfigureServices();
         }
@@ -42,7 +47,11 @@ namespace Student2.Server
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
+            });
         }
     }
 }

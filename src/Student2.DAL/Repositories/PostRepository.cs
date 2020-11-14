@@ -18,18 +18,18 @@ namespace Student2.DAL.Repositories
 
         public Task<List<Post>> GetAll(int universityId)
         {
-            return _dbContext.Posts.Where(p => p.UniversityId == universityId).Include(p => p.Course)
+            return _dbContext.Post.Where(p => p.UniversityId == universityId).Include(p => p.Course)
                 .Include(p => p.Creator).Include(p => p.Comments).OrderByDescending(p => p.Id).ToListAsync();
         }
 
-        public Task<Post> GetOne(int id) => _dbContext.Posts.Where(p => p.Id == id).Include(p => p.Creator)
+        public Task<Post> GetOne(int id) => _dbContext.Post.Where(p => p.Id == id).Include(p => p.Creator)
             .Include(p => p.Comments).ThenInclude(c => c.User)
             .Include(p => p.Course)
             .Include(p => p.University).FirstOrDefaultAsync();
 
         public Task<List<Post>> GetAllFromUser(int universityId, int userId)
         {
-            return _dbContext.Posts.Where(p => p.UniversityId == universityId && p.CreatorId == userId)
+            return _dbContext.Post.Where(p => p.UniversityId == universityId && p.CreatorId == userId)
                 .Include(p => p.Course).ToListAsync();
         }
 
@@ -62,7 +62,7 @@ namespace Student2.DAL.Repositories
                 UniversityId = principal.GetUniversityId(),
                 CreatorId = principal.GetUserId(),
             };
-            await _dbContext.Posts.AddAsync(post);
+            await _dbContext.Post.AddAsync(post);
             await _dbContext.SaveChangesAsync();
 
             return post;
@@ -70,7 +70,7 @@ namespace Student2.DAL.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            var post = await _dbContext.Posts.FindAsync(id);
+            var post = await _dbContext.Post.FindAsync(id);
             if (post == null) return false;
 
             _dbContext.Remove(post);

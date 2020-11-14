@@ -9,11 +9,11 @@ namespace Student2.DAL
     public class AppDbContext : IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, AppUserRole,
         IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
-        public DbSet<University> Universities { get; set; } = null!;
-        public DbSet<Post> Posts { get; set; } = null!;
+        public DbSet<University> University { get; set; } = null!;
+        public DbSet<Post> Post { get; set; } = null!;
         public DbSet<Course> Course { get; set; } = null!;
         public DbSet<Tutor> Tutor { get; set; } = null!;
-        public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<Comment> Comment { get; set; } = null!;
 
         public AppDbContext() { }
         public AppDbContext(DbContextOptions opts) : base(opts) { }

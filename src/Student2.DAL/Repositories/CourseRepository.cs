@@ -48,7 +48,7 @@ namespace Student2.DAL.Repositories
             var course = await _dbContext.Course.FindAsync(id);
             if (course == null) return false;
 
-            await _dbContext.Posts.Where(p => p.CourseId == course.Id).LoadAsync();
+            await _dbContext.Post.Where(p => p.CourseId == course.Id).LoadAsync();
             _dbContext.Remove(course);
             await _dbContext.SaveChangesAsync();
 

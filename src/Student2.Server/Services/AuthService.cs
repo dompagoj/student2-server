@@ -45,7 +45,7 @@ namespace Student2.Server.Services
         public async Task<Result<Tuple<AppUser, string>>> CreateUser(RegisterDto form)
         {
             var domain = form.Email.Split('@')[1];
-            var univeristy = await _dbContext.Universities.Where(u => u.Domain == domain).FirstOrDefaultAsync();
+            var univeristy = await _dbContext.University.Where(u => u.Domain == domain).FirstOrDefaultAsync();
             if (univeristy == null) return new Error($@"No university with domain ""{domain}"" found");
 
             var user = new AppUser

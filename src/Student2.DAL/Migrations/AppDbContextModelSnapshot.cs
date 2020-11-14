@@ -164,21 +164,21 @@ namespace Student2.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "31918a87-696d-4b41-9051-63db9811b93b",
+                            ConcurrencyStamp = "0790b492-3417-4d39-b5bf-3b349ed83465",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "7d18c31e-349c-44c2-a7bd-1638831620d6",
+                            ConcurrencyStamp = "fd9844d7-81ee-49a8-bb87-276287d613e9",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "21d1e213-82fe-4069-b4d7-b0114c1518a8",
+                            ConcurrencyStamp = "07b9fa65-c54c-4518-ba6b-98aba8d0e3db",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
@@ -325,15 +325,15 @@ namespace Student2.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id")
-                        .HasName("pk_comments");
+                        .HasName("pk_comment");
 
                     b.HasIndex("PostId")
-                        .HasName("ix_comments_post_id");
+                        .HasName("ix_comment_post_id");
 
                     b.HasIndex("UserId")
-                        .HasName("ix_comments_user_id");
+                        .HasName("ix_comment_user_id");
 
-                    b.ToTable("comments");
+                    b.ToTable("comment");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Course", b =>
@@ -405,8 +405,7 @@ namespace Student2.DAL.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnName("title")
-                        .HasColumnType("character varying(300)")
-                        .HasMaxLength(300);
+                        .HasColumnType("text");
 
                     b.Property<int>("UniversityId")
                         .HasColumnName("university_id")
@@ -417,18 +416,18 @@ namespace Student2.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id")
-                        .HasName("pk_posts");
+                        .HasName("pk_post");
 
                     b.HasIndex("CourseId")
-                        .HasName("ix_posts_course_id");
+                        .HasName("ix_post_course_id");
 
                     b.HasIndex("CreatorId")
-                        .HasName("ix_posts_creator_id");
+                        .HasName("ix_post_creator_id");
 
                     b.HasIndex("UniversityId")
-                        .HasName("ix_posts_university_id");
+                        .HasName("ix_post_university_id");
 
-                    b.ToTable("posts");
+                    b.ToTable("post");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Tutor", b =>
@@ -495,9 +494,9 @@ namespace Student2.DAL.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id")
-                        .HasName("pk_universities");
+                        .HasName("pk_university");
 
-                    b.ToTable("universities");
+                    b.ToTable("university");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -545,7 +544,7 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany("Users")
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_asp_net_users_universities_university_id")
+                        .HasConstraintName("fk_asp_net_users_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -572,14 +571,14 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .HasConstraintName("fk_comments_posts_post_id")
+                        .HasConstraintName("fk_comment_post_post_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Student2.BL.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_comments_asp_net_users_user_id")
+                        .HasConstraintName("fk_comment_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -594,7 +593,7 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_course_universities_university_id")
+                        .HasConstraintName("fk_course_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -604,19 +603,19 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
-                        .HasConstraintName("fk_posts_course_course_id");
+                        .HasConstraintName("fk_post_course_course_id");
 
                     b.HasOne("Student2.BL.Entities.AppUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .HasConstraintName("fk_posts_asp_net_users_creator_id")
+                        .HasConstraintName("fk_post_asp_net_users_creator_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_posts_universities_university_id")
+                        .HasConstraintName("fk_post_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -626,7 +625,7 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_tutor_universities_university_id")
+                        .HasConstraintName("fk_tutor_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

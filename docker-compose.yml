@@ -9,3 +9,8 @@ services:
       POSTGRES_USER: 'user'
       POSTGRES_PASSWORD: '1234'
       POSTGRES_DB: 'student2_db'
+  redis:
+    image: 'redis:6.0.8'
+    container_name: 'student2_redis'
+    ports:
+      - '6379:6379'

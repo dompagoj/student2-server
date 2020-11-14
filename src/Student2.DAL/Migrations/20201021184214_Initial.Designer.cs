@@ -10,7 +10,7 @@ using Student2.DAL;
 namespace Student2.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200531160909_Initial")]
+    [Migration("20201021184214_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,7 +130,7 @@ namespace Student2.DAL.Migrations
                     b.ToTable("asp_net_user_tokens");
                 });
 
-            modelBuilder.Entity("Student2.DAL.Identity.AppRole", b =>
+            modelBuilder.Entity("Student2.BL.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,27 +166,27 @@ namespace Student2.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "cbc43880-44b4-4dd9-ae90-c95196ce61b1",
+                            ConcurrencyStamp = "0790b492-3417-4d39-b5bf-3b349ed83465",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "0f4248ac-b4b2-445a-b57c-851a7ca00952",
+                            ConcurrencyStamp = "fd9844d7-81ee-49a8-bb87-276287d613e9",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "da49a809-01b0-4ab7-b476-4a74a3baca8a",
+                            ConcurrencyStamp = "07b9fa65-c54c-4518-ba6b-98aba8d0e3db",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
                 });
 
-            modelBuilder.Entity("Student2.DAL.Identity.AppUser", b =>
+            modelBuilder.Entity("Student2.BL.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -221,11 +221,13 @@ namespace Student2.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
+                        .IsRequired()
                         .HasColumnName("normalized_email")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .IsRequired()
                         .HasColumnName("normalized_user_name")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
@@ -250,6 +252,10 @@ namespace Student2.DAL.Migrations
                         .HasColumnName("two_factor_enabled")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("UniversityId")
+                        .HasColumnName("university_id")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserName")
                         .HasColumnName("user_name")
                         .HasColumnType("character varying(256)")
@@ -266,10 +272,13 @@ namespace Student2.DAL.Migrations
                         .IsUnique()
                         .HasName("user_name_index");
 
+                    b.HasIndex("UniversityId")
+                        .HasName("ix_asp_net_users_university_id");
+
                     b.ToTable("asp_net_users");
                 });
 
-            modelBuilder.Entity("Student2.DAL.Identity.AppUserRole", b =>
+            modelBuilder.Entity("Student2.BL.Entities.AppUserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnName("user_id")
@@ -288,9 +297,213 @@ namespace Student2.DAL.Migrations
                     b.ToTable("asp_net_user_roles");
                 });
 
+            modelBuilder.Entity("Student2.BL.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnName("content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnName("created_at")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("PostId")
+                        .HasColumnName("post_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UpVotes")
+                        .HasColumnName("up_votes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnName("user_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id")
+                        .HasName("pk_comment");
+
+                    b.HasIndex("PostId")
+                        .HasName("ix_comment_post_id");
+
+                    b.HasIndex("UserId")
+                        .HasName("ix_comment_user_id");
+
+                    b.ToTable("comment");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnName("full_name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TutorId")
+                        .HasColumnName("tutor_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnName("university_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id")
+                        .HasName("pk_course");
+
+                    b.HasIndex("TutorId")
+                        .HasName("ix_course_tutor_id");
+
+                    b.HasIndex("UniversityId")
+                        .HasName("ix_course_university_id");
+
+                    b.ToTable("course");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnName("content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContentHtml")
+                        .HasColumnName("content_html")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnName("course_id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnName("created_at")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnName("creator_id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnName("title")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnName("university_id")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("UpVotes")
+                        .HasColumnName("up_votes")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id")
+                        .HasName("pk_post");
+
+                    b.HasIndex("CourseId")
+                        .HasName("ix_post_course_id");
+
+                    b.HasIndex("CreatorId")
+                        .HasName("ix_post_creator_id");
+
+                    b.HasIndex("UniversityId")
+                        .HasName("ix_post_university_id");
+
+                    b.ToTable("post");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Tutor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnName("email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasColumnName("firstname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasColumnName("lastname")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnName("university_id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id")
+                        .HasName("pk_tutor");
+
+                    b.HasIndex("UniversityId")
+                        .HasName("ix_tutor_university_id");
+
+                    b.ToTable("tutor");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.University", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .HasColumnName("domain")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnName("full_name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IconUrl")
+                        .IsRequired()
+                        .HasColumnName("icon_url")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id")
+                        .HasName("pk_university");
+
+                    b.ToTable("university");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Student2.DAL.Identity.AppRole", null)
+                    b.HasOne("Student2.BL.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id")
@@ -300,7 +513,7 @@ namespace Student2.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Student2.DAL.Identity.AppUser", null)
+                    b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id")
@@ -310,7 +523,7 @@ namespace Student2.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Student2.DAL.Identity.AppUser", null)
+                    b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id")
@@ -320,7 +533,7 @@ namespace Student2.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Student2.DAL.Identity.AppUser", null)
+                    b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id")
@@ -328,19 +541,93 @@ namespace Student2.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Student2.DAL.Identity.AppUserRole", b =>
+            modelBuilder.Entity("Student2.BL.Entities.AppUser", b =>
                 {
-                    b.HasOne("Student2.DAL.Identity.AppRole", null)
+                    b.HasOne("Student2.BL.Entities.University", "University")
+                        .WithMany("Users")
+                        .HasForeignKey("UniversityId")
+                        .HasConstraintName("fk_asp_net_users_university_university_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.AppUserRole", b =>
+                {
+                    b.HasOne("Student2.BL.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Student2.DAL.Identity.AppUser", null)
+                    b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Comment", b =>
+                {
+                    b.HasOne("Student2.BL.Entities.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .HasConstraintName("fk_comment_post_post_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Student2.BL.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_comment_asp_net_users_user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Course", b =>
+                {
+                    b.HasOne("Student2.BL.Entities.Tutor", "Tutor")
+                        .WithMany("Courses")
+                        .HasForeignKey("TutorId")
+                        .HasConstraintName("fk_course_tutor_tutor_id");
+
+                    b.HasOne("Student2.BL.Entities.University", "University")
+                        .WithMany()
+                        .HasForeignKey("UniversityId")
+                        .HasConstraintName("fk_course_university_university_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Post", b =>
+                {
+                    b.HasOne("Student2.BL.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .HasConstraintName("fk_post_course_course_id");
+
+                    b.HasOne("Student2.BL.Entities.AppUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .HasConstraintName("fk_post_asp_net_users_creator_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Student2.BL.Entities.University", "University")
+                        .WithMany()
+                        .HasForeignKey("UniversityId")
+                        .HasConstraintName("fk_post_university_university_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Tutor", b =>
+                {
+                    b.HasOne("Student2.BL.Entities.University", "University")
+                        .WithMany()
+                        .HasForeignKey("UniversityId")
+                        .HasConstraintName("fk_tutor_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

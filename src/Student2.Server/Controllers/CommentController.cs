@@ -29,7 +29,7 @@ namespace Student2.Server.Controllers
                 PostId = postId,
             };
 
-            await _dbContext.Comments.AddAsync(comment);
+            await _dbContext.Comment.AddAsync(comment);
             await _dbContext.Entry(comment).Reference(c => c.User).LoadAsync();
             await _dbContext.SaveChangesAsync();
 

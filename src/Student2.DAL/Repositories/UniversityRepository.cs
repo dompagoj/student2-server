@@ -11,7 +11,7 @@ namespace Student2.DAL.Repositories
 
         public ValueTask<University> GetUniversity(int id)
         {
-            return _dbContext.Universities.FindAsync(id);
+            return _dbContext.University.FindAsync(id);
         }
     }
 }
