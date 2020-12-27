@@ -22,14 +22,18 @@ namespace Student2.DAL.Configuration
 
                 // Replace column names
                 foreach (var property in entity.GetProperties())
+#pragma warning disable 618
                     property.SetColumnName(property.GetColumnName().ToSnakeCase());
+#pragma warning restore 618
 
                 foreach (var key in entity.GetKeys()) key.SetName(key.GetName().ToSnakeCase());
 
                 foreach (var key in entity.GetForeignKeys())
                     key.SetConstraintName(key.GetConstraintName().ToSnakeCase());
 
+#pragma warning disable 618
                 foreach (var index in entity.GetIndexes()) index.SetName(index.GetName().ToSnakeCase());
+#pragma warning restore 618
             }
         }
     }
