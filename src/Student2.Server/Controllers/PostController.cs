@@ -20,6 +20,8 @@ namespace Student2.Server.Controllers
         public PostController(PostRepository repo, MarkdownService markdown) => (_repo, _markdown) = (repo, markdown);
 
         [Route("posts")]
+
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var posts = await _repo.GetAll(User.GetUniversityId());
@@ -28,6 +30,7 @@ namespace Student2.Server.Controllers
         }
 
         [Route("users/{userId}/posts")]
+        [HttpGet]
         public async Task<IActionResult> GetUserPosts(int userId)
         {
             var posts = await _repo.GetAllFromUser(User.GetUniversityId(), userId);
@@ -36,6 +39,7 @@ namespace Student2.Server.Controllers
         }
 
         [Route("posts/{id}")]
+        [HttpGet]
         public async Task<ActionResult<Post>> GetOne(int id)
         {
             var post = await _repo.GetOne(id);

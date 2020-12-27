@@ -18,6 +18,7 @@ namespace Student2.Server.Controllers
 
         public TutorController(TutorRepository repo) => _repo = repo;
 
+        [HttpGet]
         public async Task<ActionResult<List<Course>>> GetAll()
         {
             var courses = await _repo.GetAll(User.GetUniversityId());
@@ -25,6 +26,7 @@ namespace Student2.Server.Controllers
             return Ok(courses);
         }
 
+        [HttpGet]
         [Route("{id}")]
         [Authorize(AppRole.EDITOR)]
         public async Task<ActionResult<Tutor>> GetOne(int id)
