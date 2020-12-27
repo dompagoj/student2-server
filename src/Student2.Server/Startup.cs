@@ -35,11 +35,21 @@ namespace Student2.Server
             services.AddSignalR().AddStackExchangeRedis("localhost");
             services.ConfigureAuth(Configuration);
             services.ConfigureServices();
+
+            if (Env.IsDevelopment())
+            {
+                services.AddSwaggerGen();
+            }
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student2 Api v1"));
+            }
 
             app.UseCors(opts => opts.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
