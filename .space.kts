@@ -1,3 +1,3 @@
-job("Hello world")  {
+job("Hello worldd")  {
   container(displayName = "Say hello", image = "hello-world")
 }
