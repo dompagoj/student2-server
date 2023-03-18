@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LoginModel.Models;
 using Microsoft.EntityFrameworkCore;
 using Student2.BL.Entities;
-using Student2.DAL.Extensions;
-using Student2.DAL.Models;
+using LoginModel.Extensions;
 
-namespace Student2.DAL.Repositories
+namespace LoginModel.Repositories
 {
     public class PostRepository
     {
@@ -22,7 +22,7 @@ namespace Student2.DAL.Repositories
                 .Include(p => p.Creator).Include(p => p.Comments).OrderByDescending(p => p.Id).ToListAsync();
         }
 
-        public Task<Post> GetOne(int id) => _dbContext.Post.Where(p => p.Id == id).Include(p => p.Creator)
+        public Task<Post?> GetOne(int id) => _dbContext.Post.Where(p => p.Id == id).Include(p => p.Creator)
             .Include(p => p.Comments).ThenInclude(c => c.User)
             .Include(p => p.Course)
             .Include(p => p.University).FirstOrDefaultAsync();

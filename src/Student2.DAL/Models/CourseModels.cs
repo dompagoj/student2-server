@@ -1,13 +1,13 @@
 using Student2.BL.Entities;
 
-namespace Student2.DAL.Models
+namespace LoginModel.Models
 {
     public class CourseCreateModel
     {
-        public string Name { get; set; } = null!;
-        public string FullName { get; set; } = null!;
+        public required string Name { get; init; }
+        public required string FullName { get; init; }
 
-        public int? TutorId { get; set; }
+        public int? TutorId { get; init; }
     }
 
     public static class CourseExtensions

@@ -1,4 +1,4 @@
-namespace Student2.DAL.Repositories
+namespace LoginModel.Repositories
 {
     public class UserRepository
     {

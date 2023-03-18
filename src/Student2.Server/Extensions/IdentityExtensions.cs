@@ -1,8 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Student2.BL.Entities;
-using Student2.DAL;
+using LoginModel;
 
 namespace Student2.Server.Extensions
 {

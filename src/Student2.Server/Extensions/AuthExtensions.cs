@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,20 +16,14 @@ namespace Student2.Server.Extensions
 
             var section = configuration.GetSection("JWT");
             services.Configure<JwtSettings>(section);
-            var jwtSettings = section.Get<JwtSettings>();
+            var jwtSettings = section.Get<JwtSettings>() ?? throw new ("Failed to bind JWT Settings");
 
-
-            services.AddAuthentication(opts =>
-                {
-                    opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication()
                 .AddJwtBearer(opts =>
                 {
                     opts.RequireHttpsMetadata = false;
                     opts.SaveToken = true;
-                    opts.TokenValidationParameters = new TokenValidationParameters()
+                    opts.TokenValidationParameters = new()
                     {
                         ValidateIssuer = true,
                         ValidIssuer = jwtSettings.Issuer,
@@ -39,7 +32,7 @@ namespace Student2.Server.Extensions
                         IssuerSigningKey =
                             new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero
+                        ClockSkew = TimeSpan.Zero,
                     };
                 });
 

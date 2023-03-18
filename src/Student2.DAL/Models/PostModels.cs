@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Student2.BL.Entities;
 
-namespace Student2.DAL.Models
+namespace LoginModel.Models
 {
     public class PostUpdateModel
     {

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Student2.BL.Entities;
-using Student2.DAL;
-using Student2.Server.Models.Auth;
+using LoginModel;
+using Student2.DAL.Models.Auth;
 using Student2.Utils;
 
 namespace Student2.Server.Services
@@ -26,7 +26,7 @@ namespace Student2.Server.Services
                 (tokenHandler, manager, userManager, dbContext);
         }
 
-        public async Task<Result<Tuple<UserDto, string>>> LoginUser(LoginDto form)
+        public async Task<Result<Tuple<UserModel, string>>> LoginUser(DAL.Models.Auth.LoginModel form)
         {
             var user = await _userManager.FindByEmailAsync(form.Email);
             if (user == null) return new Error("Invalid username or password");
@@ -39,10 +39,10 @@ namespace Student2.Server.Services
             var token = _tokenHandler.CreateSignedToken(user, roles.FirstOr(AppRole.REGULAR));
             await _dbContext.Entry(user).Reference(u => u.University).LoadAsync();
 
-            return Tuple.Create(new UserDto(user, roles), token);
+            return Tuple.Create(new UserModel(user, roles), token);
         }
 
-        public async Task<Result<Tuple<AppUser, string>>> CreateUser(RegisterDto form)
+        public async Task<Result<Tuple<AppUser, string>>> CreateUser(RegisterModel form)
         {
             var domain = form.Email.Split('@')[1];
             var univeristy = await _dbContext.University.Where(u => u.Domain == domain).FirstOrDefaultAsync();

@@ -28,8 +28,8 @@ namespace Student2.Server.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.NormalizedUserName),
-                new Claim(ClaimTypes.Email, user.NormalizedEmail),
+                new Claim(ClaimTypes.Name, user.NormalizedUserName ?? string.Empty),
+                new Claim(ClaimTypes.Email, user.NormalizedEmail ?? string.Empty),
                 new Claim(ClaimTypes.Role, role),
                 new Claim("university", universityId?.ToString() ?? user.UniversityId.ToString()),
             };

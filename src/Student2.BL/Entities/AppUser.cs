@@ -9,8 +9,8 @@ namespace Student2.BL.Entities
         public int UniversityId { get; set; }
         public University University { get; set; } = null!;
 
-        [JsonIgnore] public override string NormalizedUserName { get; set; } = null!;
-        [JsonIgnore] public override string NormalizedEmail { get; set; } = null!;
+        [JsonIgnore] public override string? NormalizedUserName { get; set; }
+        [JsonIgnore] public override string? NormalizedEmail { get; set; }
         [JsonIgnore] public override string? PasswordHash { get; set; } = null!;
         [JsonIgnore] public override string? SecurityStamp { get; set; } = null!;
 

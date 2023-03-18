@@ -1,7 +1,7 @@
 version: '3'
 services:
   dbpostgres:
-    image: 'postgres:12.3-alpine'
+    image: 'postgres:15.1-alpine'
     container_name: 'student2_db'
     ports:
       - '5432:5432'
@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: '1234'
       POSTGRES_DB: 'student2_db'
   redis:
-    image: 'redis:6.0.8'
+    image: 'redis:7.0.7'
     container_name: 'student2_redis'
     ports:
       - '6379:6379'

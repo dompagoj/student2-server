@@ -7,180 +7,184 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Student2.DAL;
 
-namespace Student2.DAL.Migrations
+#nullable disable
+
+namespace LoginModel.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201021184214_Initial")]
+    [Migration("20230111093415_Initial")]
     partial class Initial
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnName("claim_type")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("claim_type");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnName("claim_value")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("claim_value");
 
                     b.Property<int>("RoleId")
-                        .HasColumnName("role_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
 
                     b.HasKey("Id")
                         .HasName("pk_asp_net_role_claims");
 
                     b.HasIndex("RoleId")
-                        .HasName("ix_asp_net_role_claims_role_id");
+                        .HasDatabaseName("ix_asp_net_role_claims_role_id");
 
-                    b.ToTable("asp_net_role_claims");
+                    b.ToTable("asp_net_role_claims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnName("claim_type")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("claim_type");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnName("claim_value")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("claim_value");
 
                     b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_asp_net_user_claims");
 
                     b.HasIndex("UserId")
-                        .HasName("ix_asp_net_user_claims_user_id");
+                        .HasDatabaseName("ix_asp_net_user_claims_user_id");
 
-                    b.ToTable("asp_net_user_claims");
+                    b.ToTable("asp_net_user_claims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnName("login_provider")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("login_provider");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnName("provider_key")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("provider_key");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnName("provider_display_name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("provider_display_name");
 
                     b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("LoginProvider", "ProviderKey")
                         .HasName("pk_asp_net_user_logins");
 
                     b.HasIndex("UserId")
-                        .HasName("ix_asp_net_user_logins_user_id");
+                        .HasDatabaseName("ix_asp_net_user_logins_user_id");
 
-                    b.ToTable("asp_net_user_logins");
+                    b.ToTable("asp_net_user_logins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnName("login_provider")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("login_provider");
 
                     b.Property<string>("Name")
-                        .HasColumnName("name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Value")
-                        .HasColumnName("value")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("value");
 
                     b.HasKey("UserId", "LoginProvider", "Name")
                         .HasName("pk_asp_net_user_tokens");
 
-                    b.ToTable("asp_net_user_tokens");
+                    b.ToTable("asp_net_user_tokens", (string)null);
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnName("concurrency_stamp")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<string>("Name")
-                        .HasColumnName("name")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("name");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnName("normalized_name")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("normalized_name");
 
                     b.HasKey("Id")
                         .HasName("pk_asp_net_roles");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("role_name_index");
+                        .HasDatabaseName("role_name_index");
 
-                    b.ToTable("asp_net_roles");
+                    b.ToTable("asp_net_roles", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "0790b492-3417-4d39-b5bf-3b349ed83465",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "fd9844d7-81ee-49a8-bb87-276287d613e9",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "07b9fa65-c54c-4518-ba6b-98aba8d0e3db",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
@@ -190,150 +194,150 @@ namespace Student2.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnName("access_failed_count")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("access_failed_count");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnName("concurrency_stamp")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("concurrency_stamp");
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("email");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnName("email_confirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("email_confirmed");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnName("lockout_enabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("lockout_enabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnName("lockout_end")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("lockout_end");
 
                     b.Property<string>("NormalizedEmail")
-                        .IsRequired()
-                        .HasColumnName("normalized_email")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("normalized_email");
 
                     b.Property<string>("NormalizedUserName")
-                        .IsRequired()
-                        .HasColumnName("normalized_user_name")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("normalized_user_name");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnName("password_hash")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnName("phone_number")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnName("phone_number_confirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("phone_number_confirmed");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnName("security_stamp")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("security_stamp");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnName("two_factor_enabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("two_factor_enabled");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnName("university_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.Property<string>("UserName")
-                        .HasColumnName("user_name")
+                        .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id")
                         .HasName("pk_asp_net_users");
 
                     b.HasIndex("NormalizedEmail")
                         .IsUnique()
-                        .HasName("email_index");
+                        .HasDatabaseName("email_index");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("user_name_index");
+                        .HasDatabaseName("user_name_index");
 
                     b.HasIndex("UniversityId")
-                        .HasName("ix_asp_net_users_university_id");
+                        .HasDatabaseName("ix_asp_net_users_university_id");
 
-                    b.ToTable("asp_net_users");
+                    b.ToTable("asp_net_users", (string)null);
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.AppUserRole", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.Property<int>("RoleId")
-                        .HasColumnName("role_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
 
                     b.HasKey("UserId", "RoleId")
                         .HasName("pk_asp_net_user_roles");
 
                     b.HasIndex("RoleId")
-                        .HasName("ix_asp_net_user_roles_role_id");
+                        .HasDatabaseName("ix_asp_net_user_roles_role_id");
 
-                    b.ToTable("asp_net_user_roles");
+                    b.ToTable("asp_net_user_roles", (string)null);
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnName("content")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnName("created_at")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<int>("PostId")
-                        .HasColumnName("post_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("post_id");
 
                     b.Property<int>("UpVotes")
-                        .HasColumnName("up_votes")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("up_votes");
 
                     b.Property<int>("UserId")
-                        .HasColumnName("user_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_comment");
 
                     b.HasIndex("PostId")
-                        .HasName("ix_comment_post_id");
+                        .HasDatabaseName("ix_comment_post_id");
 
                     b.HasIndex("UserId")
-                        .HasName("ix_comment_user_id");
+                        .HasDatabaseName("ix_comment_user_id");
 
                     b.ToTable("comment");
                 });
@@ -342,36 +346,37 @@ namespace Student2.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnName("full_name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<int?>("TutorId")
-                        .HasColumnName("tutor_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("tutor_id");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnName("university_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.HasKey("Id")
                         .HasName("pk_course");
 
                     b.HasIndex("TutorId")
-                        .HasName("ix_course_tutor_id");
+                        .HasDatabaseName("ix_course_tutor_id");
 
                     b.HasIndex("UniversityId")
-                        .HasName("ix_course_university_id");
+                        .HasDatabaseName("ix_course_university_id");
 
                     b.ToTable("course");
                 });
@@ -380,54 +385,55 @@ namespace Student2.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
-                        .HasColumnName("content")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content");
 
                     b.Property<string>("ContentHtml")
-                        .HasColumnName("content_html")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content_html");
 
                     b.Property<int?>("CourseId")
-                        .HasColumnName("course_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnName("created_at")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<int>("CreatorId")
-                        .HasColumnName("creator_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("creator_id");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnName("title")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnName("university_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.Property<long>("UpVotes")
-                        .HasColumnName("up_votes")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("up_votes");
 
                     b.HasKey("Id")
                         .HasName("pk_post");
 
                     b.HasIndex("CourseId")
-                        .HasName("ix_post_course_id");
+                        .HasDatabaseName("ix_post_course_id");
 
                     b.HasIndex("CreatorId")
-                        .HasName("ix_post_creator_id");
+                        .HasDatabaseName("ix_post_creator_id");
 
                     b.HasIndex("UniversityId")
-                        .HasName("ix_post_university_id");
+                        .HasDatabaseName("ix_post_university_id");
 
                     b.ToTable("post");
                 });
@@ -436,33 +442,34 @@ namespace Student2.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
-                        .HasColumnName("firstname")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("firstname");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
-                        .HasColumnName("lastname")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("lastname");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnName("university_id")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.HasKey("Id")
                         .HasName("pk_tutor");
 
                     b.HasIndex("UniversityId")
-                        .HasName("ix_tutor_university_id");
+                        .HasDatabaseName("ix_tutor_university_id");
 
                     b.ToTable("tutor");
                 });
@@ -471,29 +478,30 @@ namespace Student2.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Domain")
                         .IsRequired()
-                        .HasColumnName("domain")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("domain");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnName("full_name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
 
                     b.Property<string>("IconUrl")
                         .IsRequired()
-                        .HasColumnName("icon_url")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("icon_url");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_university");
@@ -506,9 +514,9 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -516,9 +524,9 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -526,9 +534,9 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -536,9 +544,9 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.AppUser", b =>
@@ -546,9 +554,11 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany("Users")
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_asp_net_users_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_users_university_university_id");
+
+                    b.Navigation("University");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.AppUserRole", b =>
@@ -556,16 +566,16 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
 
                     b.HasOne("Student2.BL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Comment", b =>
@@ -573,16 +583,20 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .HasConstraintName("fk_comment_post_post_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_comment_post_post_id");
 
                     b.HasOne("Student2.BL.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .HasConstraintName("fk_comment_asp_net_users_user_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_comment_asp_net_users_user_id");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Course", b =>
@@ -595,9 +609,13 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_course_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_university_university_id");
+
+                    b.Navigation("Tutor");
+
+                    b.Navigation("University");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Post", b =>
@@ -610,16 +628,22 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.AppUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .HasConstraintName("fk_post_asp_net_users_creator_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_post_asp_net_users_creator_id");
 
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_post_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_post_university_university_id");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("University");
                 });
 
             modelBuilder.Entity("Student2.BL.Entities.Tutor", b =>
@@ -627,9 +651,26 @@ namespace Student2.DAL.Migrations
                     b.HasOne("Student2.BL.Entities.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
-                        .HasConstraintName("fk_tutor_university_university_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_tutor_university_university_id");
+
+                    b.Navigation("University");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.Tutor", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("Student2.BL.Entities.University", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

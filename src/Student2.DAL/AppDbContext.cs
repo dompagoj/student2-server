@@ -1,10 +1,10 @@
+using LoginModel.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Student2.BL.Entities;
-using Student2.DAL.Configuration;
 
-namespace Student2.DAL
+namespace LoginModel
 {
     public class AppDbContext : IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, AppUserRole,
         IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>

@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Student2.DAL.Configuration
+namespace LoginModel.Configuration
 {
     public static class NamingConv
     {
@@ -18,7 +18,7 @@ namespace Student2.DAL.Configuration
             foreach (var entity in builder.Model.GetEntityTypes())
             {
                 // Replace table names
-                entity.SetTableName(entity.GetTableName().ToSnakeCase());
+                entity.SetTableName(entity.GetTableName()?.ToSnakeCase());
 
                 // Replace column names
                 foreach (var property in entity.GetProperties())
@@ -26,13 +26,13 @@ namespace Student2.DAL.Configuration
                     property.SetColumnName(property.GetColumnName().ToSnakeCase());
 #pragma warning restore 618
 
-                foreach (var key in entity.GetKeys()) key.SetName(key.GetName().ToSnakeCase());
+                foreach (var key in entity.GetKeys()) key.SetName(key.GetName()?.ToSnakeCase());
 
                 foreach (var key in entity.GetForeignKeys())
-                    key.SetConstraintName(key.GetConstraintName().ToSnakeCase());
+                    key.SetConstraintName(key.GetConstraintName()?.ToSnakeCase());
 
 #pragma warning disable 618
-                foreach (var index in entity.GetIndexes()) index.SetName(index.GetName().ToSnakeCase());
+                foreach (var index in entity.GetIndexes()) index.SetDatabaseName(index.GetDatabaseName()?.ToSnakeCase());
 #pragma warning restore 618
             }
         }

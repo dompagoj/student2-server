@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
-using Student2.DAL;
+using LoginModel;
 using Student2.Server.Extensions;
+using Student2.Server.MQTT;
 using Student2.Server.SignalRHubs;
 
 namespace Student2.Server
@@ -31,14 +33,24 @@ namespace Student2.Server
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
             services.AddSignalR().AddStackExchangeRedis("localhost");
             services.ConfigureAuth(Configuration);
-            services.ConfigureServices();
+            services.AddCustomServices();
+
+            services.AddMQTT();
 
             if (Env.IsDevelopment())
             {
-                services.AddSwaggerGen();
+                // TODO
+                services.AddSwaggerGen(opts =>
+                {
+                    opts.SupportNonNullableReferenceTypes();
+                });
             }
         }
 

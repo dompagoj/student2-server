@@ -16,8 +16,7 @@ namespace Student2.Server.Controllers
         }
 
 
-        [HttpGet]
-        [Route("set")]
+        [HttpGet("set")]
         public async Task<IActionResult> SetKey(string key, string value)
         {
             await _cache.GetDatabase().StringSetAsync(key, value);
@@ -25,8 +24,7 @@ namespace Student2.Server.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [Route("get")]
+        [HttpGet("get")]
         public async Task<IActionResult> GetKey(string key)
         {
             var value = await _cache.GetDatabase().StringGetAsync(key);

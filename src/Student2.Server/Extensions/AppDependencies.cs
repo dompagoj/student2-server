@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Student2.DAL.Repositories;
+using LoginModel.Repositories;
 using Student2.Server.Models;
 using Student2.Server.Services;
 
@@ -8,10 +8,10 @@ namespace Student2.Server.Extensions
 {
     public static class AppDependencies
     {
-        public static void ConfigureServices(this IServiceCollection services)
+        public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddSingleton<AppJwtTokenHandler>();
-            services.AddSingleton<GCloudStorage>();
+            // services.AddSingleton<GCloudStorage>();
             services.AddSingleton<MarkdownService>();
 
             services.AddScoped<AuthService>();

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoginModel.Models;
 using Microsoft.EntityFrameworkCore;
 using Student2.BL.Entities;
-using Student2.DAL.Models;
 
-namespace Student2.DAL.Repositories
+namespace LoginModel.Repositories
 {
     public class CourseRepository
     {
@@ -55,7 +55,7 @@ namespace Student2.DAL.Repositories
             return true;
         }
 
-        public Task<Course> GetOne(int id) =>
+        public Task<Course?> GetOne(int id) =>
             _dbContext.Course.Where(c => c.Id == id).Include(c => c.Tutor).FirstOrDefaultAsync();
     }
 }

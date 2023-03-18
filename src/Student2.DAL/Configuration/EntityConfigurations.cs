@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Student2.BL.Entities;
 
-namespace Student2.DAL.Configuration
+namespace LoginModel.Configuration
 {
     public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {

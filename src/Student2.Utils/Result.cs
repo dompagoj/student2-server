@@ -81,7 +81,7 @@ namespace Student2.Utils
         public Error(Exception exception) : base(exception.Message, exception) { }
 
         // TODO Should serialize for a http response by some kind a standard
-        public string Serialize()
+        public object Serialize()
         {
             return Message;
         }

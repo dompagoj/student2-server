@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Student2.BL.Entities;
-using Student2.DAL.Extensions;
-using Student2.DAL.Models;
-using Student2.DAL.Repositories;
+using LoginModel.Extensions;
+using LoginModel.Models;
+using LoginModel.Repositories;
 
 namespace Student2.Server.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/tutors")]
+    [Route("tutors")]
     public class TutorController : Controller
     {
         readonly TutorRepository _repo;
@@ -26,8 +26,7 @@ namespace Student2.Server.Controllers
             return Ok(courses);
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         [Authorize(AppRole.EDITOR)]
         public async Task<ActionResult<Tutor>> GetOne(int id)
         {
@@ -46,9 +45,8 @@ namespace Student2.Server.Controllers
             return Ok(tutor);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(AppRole.EDITOR)]
-        [Route("{id}")]
         public async Task<ActionResult<Course>> Update(int id, [FromBody] TutorCreateModel form)
         {
             var course = await _repo.Update(id, form);
@@ -57,9 +55,8 @@ namespace Student2.Server.Controllers
             return Ok(course);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(AppRole.EDITOR)]
-        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _repo.Delete(id);

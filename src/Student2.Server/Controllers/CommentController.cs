@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Student2.BL.Entities;
-using Student2.DAL;
-using Student2.DAL.Extensions;
-using Student2.DAL.Models;
+using LoginModel;
+using LoginModel.Extensions;
+using LoginModel.Models;
 
 namespace Student2.Server.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api/posts/{postId}/comments")]
+    [Route("posts/{postId}/comments")]
     public class CommentController : Controller
     {
         AppDbContext _dbContext;

@@ -2,22 +2,27 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Student2.Server.Models.Auth;
+using MQTTnet.Extensions.ManagedClient;
+using Student2.DAL.Models.Auth;
 using Student2.Server.Services;
 
 namespace Student2.Server.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("auth")]
     public class AuthController : Controller
     {
         readonly AuthService _authService;
+        readonly IManagedMqttClient _mqtt;
 
-        public AuthController(AuthService authService) => _authService = authService;
+        public AuthController(AuthService authService, IManagedMqttClient mqtt)
+        {
+            _authService = authService;
+            _mqtt = mqtt;
+        }
 
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register(RegisterDto form)
+        [HttpPost("register")]
+        public async Task<ActionResult<AuthResponse>> Register(RegisterModel form)
         {
             var result = await _authService.CreateUser(form);
             if (result.HasError) return BadRequest(result.Error.Message);
@@ -25,33 +30,28 @@ namespace Student2.Server.Controllers
 
             var roles = await _authService.GetUserRoles(user);
 
-            return Ok(new {user = new UserDto(user, roles), token});
+            return Ok(new AuthResponse() { Token = token, User = new(user, roles) });
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto form)
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> Login([FromBody] DAL.Models.Auth.LoginModel form)
         {
             var result = await _authService.LoginUser(form);
-            if (result.HasError) return BadRequest(result.Error.Serialize());
+            if (result.HasError) return BadRequest(new { invalidLogin = result.Error.Serialize() });
             var (user, token) = result.Value;
 
-            return Ok(new {user, token});
+            return Ok(new AuthResponse() { User = user, Token = token });
         }
 
-        [HttpGet]
-        [Route("me")]
+        [HttpGet("me")]
         [Authorize]
-        public async Task<IActionResult> Me()
+        public async Task<ActionResult<UserModel>> Me()
         {
             var result = await _authService.GetUser(User);
             if (result == null) return BadRequest();
             var (loggedInUser, roles) = result.Value;
 
-            return Ok(new
-            {
-                user = new UserDto(loggedInUser, roles),
-            });
+            return Ok(new UserModel(loggedInUser, roles));
         }
     }
 }

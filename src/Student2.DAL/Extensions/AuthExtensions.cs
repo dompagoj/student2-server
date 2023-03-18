@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Student2.DAL.Extensions
+namespace LoginModel.Extensions
 {
     public static class AuthExtensions
     {

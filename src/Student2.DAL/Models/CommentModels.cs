@@ -1,7 +1,10 @@
-namespace Student2.DAL.Models
+using System.ComponentModel.DataAnnotations;
+
+namespace LoginModel.Models
 {
     public class CreateCommentModel
     {
-        public string Content { get; set; } = null!;
+        [Required]
+        public required string Content { get; init; }
     }
 }

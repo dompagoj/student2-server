@@ -2,24 +2,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Student2.BL.Entities;
-using Student2.DAL.Extensions;
-using Student2.DAL.Models;
-using Student2.DAL.Repositories;
+using LoginModel.Extensions;
+using LoginModel.Models;
+using LoginModel.Repositories;
 using Student2.Server.Services;
 
 namespace Student2.Server.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route(("api"))]
+    [Route(("posts"))]
     public class PostController : Controller
     {
         readonly PostRepository _repo;
         readonly MarkdownService _markdown;
 
         public PostController(PostRepository repo, MarkdownService markdown) => (_repo, _markdown) = (repo, markdown);
-
-        [Route("posts")]
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -29,8 +27,7 @@ namespace Student2.Server.Controllers
             return Ok(posts);
         }
 
-        [Route("users/{userId}/posts")]
-        [HttpGet]
+        [HttpGet("users/{userId}/posts")]
         public async Task<IActionResult> GetUserPosts(int userId)
         {
             var posts = await _repo.GetAllFromUser(User.GetUniversityId(), userId);
@@ -38,8 +35,7 @@ namespace Student2.Server.Controllers
             return Ok(posts);
         }
 
-        [Route("posts/{id}")]
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetOne(int id)
         {
             var post = await _repo.GetOne(id);
@@ -49,7 +45,6 @@ namespace Student2.Server.Controllers
             return Ok(post);
         }
 
-        [Route("posts")]
         [HttpPost]
         public async Task<ActionResult<Post>> CreatePost([FromBody] PostCreateModel form)
         {
@@ -58,8 +53,7 @@ namespace Student2.Server.Controllers
             return Ok(post);
         }
 
-        [Route("posts/{id}")]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Post>> UpdatePost(int id, [FromBody] PostUpdateModel form)
         {
             var post = await _repo.GetOne(id);
@@ -71,8 +65,7 @@ namespace Student2.Server.Controllers
             return Ok(post);
         }
 
-        [Route("posts/{id}")]
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _repo.Delete(id);
