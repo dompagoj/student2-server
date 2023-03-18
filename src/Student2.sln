@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Student2.DAL", "Student2.DA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Student2.Utils", "Student2.Utils\Student2.Utils.csproj", "{C6C3E166-EC80-4E11-97BB-53C6D9C8D376}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{A687681D-5AB6-4BFF-88A4-13F9BFDA2EB5}"
+	ProjectSection(SolutionItems) = preProject
+		..\docker-compose.yml = ..\docker-compose.yml
+		..\.space.kts = ..\.space.kts
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
